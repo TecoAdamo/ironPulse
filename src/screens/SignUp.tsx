@@ -1,16 +1,32 @@
 import { useNavigation } from "@react-navigation/native";
 import { VStack, Image, Center, Heading, ScrollView } from "native-base";
 
+import { useForm, Controller } from "react-hook-form";
+
 import BackgroundImg from "@assets/background.png";
 
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
 
+type FormDataProps = {
+    name: string
+    email: string
+    password: string
+    confirmPassword: string
+}
+
 export function SignUp() {
+    const { control, handleSubmit } = useForm<FormDataProps>()
+
     const navigation = useNavigation()
 
     const handleGoBack = () => {
         navigation.goBack()
+    }
+
+    const handleSignUp = ({ name, email, password, confirmPassword }: FormDataProps) => {
+        console.log({ name, email, password, confirmPassword })
+
     }
     return (
         <ScrollView
@@ -33,27 +49,67 @@ export function SignUp() {
                 </Center> */}
 
                 <Center>
-
                     <Heading color='gray.100' mb={6} mt='72' fontSize='xl' fontFamily='heading'>
                         Crie sua conta
                     </Heading>
-                    <Input
-                        placeholder="Nome:"
+                    <Controller
+                        control={control}
+                        name="name"
+                        render={({ field: { onChange, value } }) => (
+                            <Input
+                                placeholder="Nome:"
+                                onChangeText={onChange}
+                                value={value}
+                            />
+                        )}
                     />
-                    <Input
-                        placeholder="Email:"
-                        keyboardType="email-address"
-                        autoCapitalize="none"
+                    <Controller
+                        control={control}
+                        name="email"
+                        render={({ field: { onChange, value } }) => (
+                            <Input
+                                placeholder="Email:"
+                                keyboardType="email-address"
+                                autoCapitalize="none"
+                                onChangeText={onChange}
+                                value={value}
+                            />
+
+                        )}
                     />
-                    <Input
-                        placeholder="Senha:"
-                        secureTextEntry
+                    <Controller
+                        control={control}
+                        name="password"
+                        render={({ field: { onChange, value } }) => (
+                            <Input
+                                placeholder="Senha:"
+                                secureTextEntry
+                                onChangeText={onChange}
+                                value={value}
+                            />
+
+                        )}
                     />
-                    <Input
-                        placeholder="Confirmar Senha:"
-                        secureTextEntry
+                    <Controller
+                        control={control}
+                        name="confirmPassword"
+                        render={({ field: { onChange, value } }) => (
+                            <Input
+                                placeholder="Confirmar Senha:"
+                                secureTextEntry
+                                onChangeText={onChange}
+                                value={value}
+                                onSubmitEditing={handleSubmit(handleSignUp)}
+                                returnKeyType="send"
+                            />
+
+                        )}
                     />
-                    <Button title="Criar e acessar" />
+
+
+                    <Button
+                        onPress={handleSubmit(handleSignUp)}
+                        title="Criar e acessar" />
                 </Center>
 
                 <Center mt={6}>
