@@ -36,8 +36,21 @@ export function SignUp() {
         navigation.goBack()
     }
 
-    const handleSignUp = ({ name, email, password, confirmPassword }: FormDataProps) => {
-        console.log({ name, email, password, confirmPassword })
+    const handleSignUp = async ({ name, email, password }: FormDataProps) => {
+        const response = await fetch('http://10.0.0.104:3333/users', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name,
+                email,
+                password
+            }),
+        })
+        const data = await response.json()
+        console.log(data)
 
     }
     return (
